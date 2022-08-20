@@ -2,6 +2,7 @@
     Author: Pascal Pilz, k12111234
     SS 2022
     KO Mathematics for AI II, 324.813
+    https://github.com/pilzpascal/KO_Mathematics_for_AI_II
 
     This is an implementation of the Gram-Schmidt process for orthonormalizing vector basis.
 
