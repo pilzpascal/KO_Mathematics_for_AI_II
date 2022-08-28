@@ -1,4 +1,4 @@
-""""
+"""
     Author: Pascal Pilz, k12111234
     SS 2022
     KO Mathematics for AI II, 324.813
@@ -9,6 +9,9 @@
     This implementation uses pure python. For more details on the topic see the accompanying GitHub repository and the
     slides.
 """
+
+
+from utils import get_input, print_preamble, draw_vectors
 
 
 def inner_product(x: list, y: list) -> float:
@@ -43,6 +46,7 @@ def norm(vector: list) -> float:
     return inner_product(vector, vector) ** 0.5
 
 
+# noinspection SpellCheckingInspection
 def check_linear_independence(s: list) -> bool:
     """
     Checks if a list of given vectors are linearly independent using the Cauchy-Schwarz inequality.
@@ -94,42 +98,6 @@ def check_properties_base(s: list) -> None:
         raise ValueError("The number of elements in the base is greater than the length of the individual elements.")
     if not check_linear_independence(s):
         raise ValueError("Entered vectors are not linearly independent.")
-
-
-def check_valid_input(string: str) -> None:
-    """
-    Checks if a given string is a number. Able to identify negative numbers and numbers containing at most one dot.
-
-            Parameters:
-                    string (str): string to be checked
-
-            Returns:
-                None
-
-            Raises:
-                ValueError
-    """
-    # This expression is required to ensure that negative and decimal numbers are accepted
-    if not string.lstrip("-").replace(".", "", 1).isnumeric():
-        raise ValueError(f"Invalid input: {string}.")
-
-
-def get_input() -> list:
-    list_of_vectors = [[]]
-    while True:
-        last_entered = input("enter value: ")
-        if last_entered == "X":
-            print(f"Base entered so far: {list_of_vectors}.")
-            check_properties_base(list_of_vectors)
-            list_of_vectors.append(list())
-            continue
-        if last_entered == "XX":
-            check_properties_base(list_of_vectors)
-            print(f"The entered base is:{list_of_vectors}")
-            break
-        check_valid_input(last_entered)
-        list_of_vectors[-1].append(float(last_entered))
-    return list_of_vectors
 
 
 def v_s_mul(vector: list, scalar: float) -> list:
@@ -202,23 +170,20 @@ def gram_schmidt_process_manual(s: list) -> list:
 
 
 if __name__ == "__main__":
-    print("=" * 105)
+    print_preamble()
+
     print()
-    print("The base can be of any real vector space with a dimension greater or equal than 2, i.e, R^2, R^3, ...")
-    print()
-    print("The base is to be entered as follows: each element of the vector is entered separately, confirmed by the")
-    print("'enter'-key. If 'X' gets entered, a vector is concluded and the next one can be entered. Once the base is")
-    print("fully entered, 'XX' should be entered. Only valid bases are accepted, that is:")
-    print("    - all vectors must be linearly independent,")
-    print("    - all vectors must be of equal length,")
-    print("    - the number of vectors must be equal to the length of the individual vectors.")
-    print("Decimal numbers are entered with a dot.")
-    print()
-    print("Example for valid input: '1', '2', 'X', '-1', '-0.5', 'XX'")
-    print()
-    print("=" * 105)
+    print("="*105)
     print()
 
-    base = get_input()
+    input_base = get_input()
+    check_properties_base(input_base)
+    print(f"The entered base is {input_base}")
 
-    print(gram_schmidt_process_manual(base))
+    print()
+    print("="*105)
+    print()
+
+    output_base = gram_schmidt_process_manual(input_base)
+    print(f"The output of the Gram-Schmidt process is: {output_base}")
+    draw_vectors(input_base, output_base)
