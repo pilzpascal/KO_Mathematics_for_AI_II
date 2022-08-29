@@ -14,28 +14,27 @@ import numpy as np
 from numpy.linalg import norm
 from numpy import dot
 
-from utils import get_input, print_preamble, draw_vectors
+from utils import get_input, print_preamble, draw_vectors, print_seperator
 
 
-def check_linear_independence(s: list) -> bool:
+def check_linear_independence(vectors: list) -> bool:
     """
-    Checks if a list of given vectors are linearly independent using singular value decomposition.
+    Checks if a list of given vectors are linearly independent using the Cauchy-Schwarz inequality.
 
             Parameters:
-                    s (list): list of vectors
+                    vectors (list): list of vectors
 
             Returns:
                 True if the vectors are linearly independent, False else.
     """
-    # This way of determining linear independence was found at
-    # https://kitchingroup.cheme.cmu.edu/blog/2013/03/01/Determining-linear-independence-of-a-set-of-vectors/
-    length = len(s)
-    stacked_matrix = np.row_stack(s)
-    eps = np.finfo(norm(stacked_matrix).dtype).eps
-    tolerance = max(eps * np.array(stacked_matrix.shape))
-    _, s, _ = np.linalg.svd(stacked_matrix)
-    if np.sum(s > tolerance) < length:
-        return False
+    # We are using the Cauchy-Schwarz inequality to check for linear dependence, as seen here
+    # https://web.archive.org/web/20220815112144/https://endlesslernen.wordpress.com/2018/03/29/linear-independent-check-in-python/
+    for x in vectors:
+        for y in vectors:
+            if x is not y:
+                tolerance = 1e-9 * max(abs(dot(x, y)), norm(x) * norm(y))
+                if abs(abs(dot(x, y)) - norm(x) * norm(y)) < tolerance:
+                    return False
     return True
 
 
@@ -96,19 +95,14 @@ def gram_schmidt_process_numpy(s: list) -> list:
 
 
 if __name__ == "__main__":
-    print_preamble()
 
-    print()
-    print("="*105)
-    print()
+    print_preamble()
 
     input_base = get_input()
     check_properties_base(input_base)
     print(f"The entered base is {input_base}")
 
-    print()
-    print("="*105)
-    print()
+    print_seperator()
 
     output_base = gram_schmidt_process_numpy(input_base)
     print(f"The output of the Gram-Schmidt process is: {output_base}")

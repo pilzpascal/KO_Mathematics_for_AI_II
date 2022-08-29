@@ -29,20 +29,36 @@ def get_input() -> list:
             Parameters:
 
             Returns:
-                list_of_vectors (list): the entered list
+                basis (list): the entered list
     """
-    list_of_vectors = [[]]
-    while True:
-        last_entered = input("enter value: ")
-        if last_entered == "X":
-            print(f"Base entered so far: {list_of_vectors}.")
-            list_of_vectors.append(list())
-            continue
-        if last_entered == "XX":
-            break
-        check_valid_input(last_entered)
-        list_of_vectors[-1].append(float(last_entered))
-    return list_of_vectors
+    print("Enter the elements of the basis:")
+    element = input()
+    element = [float(elem) for elem in element.split()]
+    basis = [element]
+    dim = len(element)
+
+    while len(basis) < dim:
+        element = input()
+        try:
+            element = [float(elem) for elem in element.split()]
+        except ValueError:
+            print("It appears you entered something that could not converted to float.")
+        else:
+            basis.append(element)
+    return basis
+
+
+def print_seperator() -> None:
+    """
+    Prints a seperator consisting of a new line, 105 * "=", a new line.
+
+            Parameters:
+
+            Returns:
+    """
+    print()
+    print("="*105)
+    print()
 
 
 def print_preamble() -> None:
@@ -53,19 +69,37 @@ def print_preamble() -> None:
 
             Returns:
     """
-    print("=" * 105)
-    print()
+    print_seperator()
+
     print("The base can be of any real vector space with a dimension greater or equal than 2, i.e, R^2, R^3, ...")
+    print("The base is to be entered as follows: each element of the base (vector) is entered at a time, the elements")
+    print("of the vector are separated by a SPACE and the completed vector is confirmed with the ENTER key.")
+    print("The first entered vector determines the dimension of the vector base, so if for example the first entered")
+    print("vector is '1 2' then the dimension will be 2, i.e., R^2, if the first element is '1 2 3 4' we have R^4.")
+    print("As soon as the full basis is entered, i.e., as many vectors were given as is the dimension (length) of the")
+    print("individual vectors, the input will automatically be processed.")
     print()
-    print("The base is to be entered as follows: each element of the vector is entered separately, confirmed by the")
-    print("'enter'-key. If 'X' gets entered, a vector is concluded and the next one can be entered. Once the base is")
-    print("fully entered, 'XX' should be entered. Only valid bases are accepted, that is:")
+    print("Negative numbers have a leading '-' (minus), no space between the '-' and the number, e.g. '-1'.")
+    print("Decimal numbers use a '.' (dot), no space between the '.' and the numbers, e.g. '1.14'.")
+    print()
+    print("Only a valid base will be accepted, that is:")
     print("    - all vectors must be linearly independent,")
     print("    - all vectors must be of equal length,")
     print("    - the number of vectors must be equal to the length of the individual vectors.")
-    print("Decimal numbers are entered with a dot.")
+
+    print_seperator()
+
+    print("Example for valid input:")
+    print("1 2")
+    print("-1 -0.5")
     print()
-    print("Example for valid input: '1', '2', 'X', '-1', '-0.5', 'XX'")
+    print("Example for valid input:")
+    print("1 2 3 4")
+    print("5 6 7 8")
+    print("9 10 11 12")
+    print("13 14 15 16")
+
+    print_seperator()
 
 
 def draw_vectors(input_base, orthonormalized_base) -> None:

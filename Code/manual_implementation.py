@@ -11,7 +11,7 @@
 """
 
 
-from utils import get_input, print_preamble, draw_vectors
+from utils import get_input, print_preamble, draw_vectors, print_seperator
 
 
 def inner_product(x: list, y: list) -> float:
@@ -47,24 +47,23 @@ def norm(vector: list) -> float:
 
 
 # noinspection SpellCheckingInspection
-def check_linear_independence(s: list) -> bool:
+def check_linear_independence(vectors: list) -> bool:
     """
     Checks if a list of given vectors are linearly independent using the Cauchy-Schwarz inequality.
 
             Parameters:
-                    s (list): list of vectors
+                    vectors (list): list of vectors
 
             Returns:
                 True if the vectors are linearly independent, False else.
     """
     # We are using the Cauchy-Schwarz inequality to check for linear dependence, as seen here
-    # https: // web.archive.org / web / 20220815112144 / https: // endlesslernen.wordpress.com / 2018 / 03 / 29 /
-    # linear - independent - check - in -python /
-    for x in s:
-        for y in s:
-            if not x == y:
-                if abs(abs(inner_product(x, y)) - norm(x) * norm(y)) \
-                        < 1e-9 * max(abs(inner_product(x, y)), norm(x) * norm(y)):
+    # https://web.archive.org/web/20220815112144/https://endlesslernen.wordpress.com/2018/03/29/linear-independent-check-in-python/
+    for x in vectors:
+        for y in vectors:
+            if x is not y:
+                tolerance = 1e-9 * max(abs(inner_product(x, y)), norm(x) * norm(y))
+                if abs(abs(inner_product(x, y)) - norm(x) * norm(y)) < tolerance:
                     return False
     return True
 
@@ -170,19 +169,14 @@ def gram_schmidt_process_manual(s: list) -> list:
 
 
 if __name__ == "__main__":
-    print_preamble()
 
-    print()
-    print("="*105)
-    print()
+    print_preamble()
 
     input_base = get_input()
     check_properties_base(input_base)
     print(f"The entered base is {input_base}")
 
-    print()
-    print("="*105)
-    print()
+    print_seperator()
 
     output_base = gram_schmidt_process_manual(input_base)
     print(f"The output of the Gram-Schmidt process is: {output_base}")
