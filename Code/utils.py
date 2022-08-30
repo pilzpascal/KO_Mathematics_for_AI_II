@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 from math import ceil, floor
 
@@ -87,6 +86,7 @@ def get_input() -> list:
     basis = [element]
     dim = len(element)
 
+    # We do this while loop so that once all elements are entered the process automatically terminates
     while len(basis) < dim:
         element = input()
         try:
@@ -176,6 +176,7 @@ def check_properties_base(s: list) -> None:
     length = len(s)
     for j in range(length):
         # We don't care to orthonormalize basis of one dimensional real vector spaces
+        # Since a set containing one element cannot be orthonormal
         if len(s[j]) < 2:
             raise ValueError(f"An element of the base is shorter than the minimum required length.")
         # All elements of a base need to be of equal length, i.e., of the same dimension
@@ -198,7 +199,7 @@ def draw_vectors(vectors: list) -> None:
 
     :raises ValueError: the passed elements are not of the right form
     """
-    dim = len(vectors) // 2
+    dim = len(vectors[0])
     if (dim == 2 and sum([len(elem) != 2 for elem in vectors])) \
             or (dim == 3 and sum([len(elem) != 3 for elem in vectors])):
         raise ValueError(f"Function for drawing vectors of R^2 or R^3 was called on a base of R^{dim}.")
@@ -212,7 +213,8 @@ def draw_vectors(vectors: list) -> None:
     else:
         raise ValueError(f"Drawing unction was called for vectors of dimension {dim}.")
 
-    origin = [[0] * dim * 2] * dim
+    # All vectors we want to draw start at 0V
+    origin = [[0] * len(vectors)] * dim
     x_dir = [elem[0] for elem in vectors]
     y_dir = [elem[1] for elem in vectors]
     if dim == 3:
@@ -226,6 +228,7 @@ def draw_vectors(vectors: list) -> None:
                    color=["red", "blue", "pink", "cyan"],
                    angles='xy', scale_units='xy', scale=1)
 
+    # Getting the min and max to make the visualization a bit more pleasant and adapting to the vectors
     x_min = min([elem[0] for elem in vectors])
     x_max = max([elem[0] for elem in vectors])
     y_min = min([elem[1] for elem in vectors])

@@ -4,6 +4,8 @@ from manual_implementation import gram_schmidt_process_manual
 
 
 def main():
+    drawable_dimensions = [2, 3]
+
     print_preamble()
 
     while True:
@@ -35,12 +37,14 @@ def main():
         output_base = gram_schmidt_process_manual(input_base)
     else:
         raise ValueError(f"Something went wrong. {implementation} was chosen as implementation.")
+
     print(f"The output of the Gram-Schmidt process is: {output_base}")
 
-    if len(input_base) in [2, 3]:
+    if len(input_base) in drawable_dimensions:
         draw_vectors(input_base + output_base)
     else:
-        print("There is no drawing since the given base is not of R^2 or R^3.")
+        print(f"There is no drawing since the given base is not of "
+              f"{['R^' + str(elem) for elem in drawable_dimensions]}.")
 
 
 if __name__ == "__main__":
